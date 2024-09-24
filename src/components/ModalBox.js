@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Checkbox,
   Input,
 } from '@nextui-org/react';
 import { useFormik } from 'formik';
@@ -31,13 +30,10 @@ const UPDATE_DUMMY_DATA = gql`
 
 // Formik validation schema using Yup
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+  id: Yup.string().required('Email is required'),
   fullName: Yup.string()
     .min(3, 'Full name must be at least 3 characters long')
     .required('Full name is required'),
-  rememberMe: Yup.boolean(),
 });
 
 export default function AddUserForm({ isOpen, onOpenChange, refetch }) {
@@ -46,23 +42,24 @@ export default function AddUserForm({ isOpen, onOpenChange, refetch }) {
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
-      email: '',
+      id: '',
+      email: 'tesla@example.com',
       fullName: '',
-      rememberMe: false,
+      status: 'sold',
     },
     validationSchema,
     onSubmit: async () => {
       try {
-        const { email, fullName } = formik.values;
+        const { id, email, fullName, status } = formik.values;
 
         await updateDummyData({
           variables: {
             input: {
-              id: '1',
+              id,
               createdAt: new Date().toISOString(),
               email,
               fullName,
-              status: 'active', // Adjust based on your requirements
+              status: status || 'active',
             },
           },
         });
@@ -114,26 +111,26 @@ export default function AddUserForm({ isOpen, onOpenChange, refetch }) {
             <ModalBody>
               <form onSubmit={formik.handleSubmit}>
                 {/* Email Input */}
+
                 <Input
-                  autoFocus
-                  label="Email"
-                  placeholder="Enter your email"
+                  label="ID"
+                  placeholder="Enter your new ID"
+                  type="text"
                   variant="bordered"
-                  name="email"
-                  value={formik.values.email}
+                  name="id"
+                  value={formik.values.id}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   helperText={
-                    formik.touched.email && formik.errors.email
-                      ? formik.errors.email
+                    formik.touched.id && formik.errors.id
+                      ? formik.errors.id
                       : ''
                   }
                   helperColor={
-                    formik.touched.email && formik.errors.email
-                      ? 'error'
-                      : 'default'
+                    formik.touched.id && formik.errors.id ? 'error' : 'default'
                   }
                 />
+
                 {/* Full Name Input */}
                 <Input
                   label="Full Name"
@@ -155,18 +152,27 @@ export default function AddUserForm({ isOpen, onOpenChange, refetch }) {
                       : 'default'
                   }
                 />
-                {/* Remember Me Checkbox */}
-                <div className="flex py-2 px-1 justify-between">
-                  <Checkbox
-                    name="rememberMe"
-                    isSelected={formik.values.rememberMe}
-                    onChange={(e) =>
-                      formik.setFieldValue('rememberMe', e.target.checked)
-                    }
-                  >
-                    Remember me
-                  </Checkbox>
-                </div>
+
+                <Input
+                  label="Status"
+                  placeholder="Enter your new Status"
+                  type="text"
+                  variant="bordered"
+                  name="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  helperText={
+                    formik.touched.status && formik.errors.status
+                      ? formik.errors.status
+                      : ''
+                  }
+                  helperColor={
+                    formik.touched.status && formik.errors.status
+                      ? 'error'
+                      : 'default'
+                  }
+                />
               </form>
             </ModalBody>
             <ModalFooter>

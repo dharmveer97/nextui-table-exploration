@@ -1,7 +1,9 @@
 'use client';
 
 import { gql, useQuery } from '@apollo/client';
+import { Spinner } from '@nextui-org/react';
 import UserTable from '../components/UserTable';
+import EmptyState from '../components/EmptyState';
 
 const columns = [
   { name: `Created At  Date`, uid: 'createdAt' },
@@ -32,12 +34,18 @@ export default function Home() {
 
   return (
     <div className="container mx-auto mt-6">
-      <UserTable
-        allUsers={userData}
-        columns={columns}
-        refetch={refetch}
-        loading={loading}
-      />
+      {loading && <Spinner />}
+      {!loading && !data && (
+        <EmptyState title="No data available at the moment. Please wait or try again later." />
+      )}
+      {!loading && data && (
+        <UserTable
+          allUsers={userData}
+          columns={columns}
+          refetch={refetch}
+          loading={loading}
+        />
+      )}
     </div>
   );
 }
