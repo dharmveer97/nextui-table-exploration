@@ -32,21 +32,19 @@ export default function Home() {
 
   const userData = data && data.getDummyData ? data.getDummyData : [];
 
-  console.log(loading, 'loading');
+  // console.log(loading, 'loading');
   return (
     <div className="container mx-auto mt-6">
       {loading && <Spinner />}
       {!loading && !data && (
         <EmptyState title="No data available at the moment. Please wait or try again later." />
       )}
-      {!loading && data && (
-        <UserTable
-          allUsers={userData}
-          columns={columns}
-          refetch={refetch}
-          loading={loading}
-        />
-      )}
+      <UserTable
+        allUsers={userData}
+        columns={columns}
+        refetch={refetch}
+        loading={loading}
+      />
     </div>
   );
 }
