@@ -27,7 +27,7 @@ export const getUsersQuery = gql`
 
 export default function Home() {
   const { data, loading, refetch } = useQuery(getUsersQuery, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const userData = data && data.getDummyData ? data.getDummyData : [];
