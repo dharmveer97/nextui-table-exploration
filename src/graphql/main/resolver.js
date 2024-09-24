@@ -5,13 +5,15 @@ export default {
   Query: {
     hello: async () => {
       try {
-        console.log('Migration completed successfully.');
+        console.log('Example completed successfully.');
         return { success: true, message: 'Hello, welcome!' };
       } catch (error) {
-        console.error('Migration failed:', error);
-        return { success: false, message: 'Migration failed.' };
+        console.error('Example failed:', error);
+        return { success: false, message: 'Example failed.' };
       }
     },
+
+    // for fetch all data
     getDummyData: () => {
       const data = Array.from({ length: 1000 }, (_, index) => ({
         id: uuidv4(),
@@ -25,6 +27,7 @@ export default {
     },
   },
   Mutation: {
+    // for add new entry
     updateDummyData: async (root, args) => {
       const { input } = args;
 
