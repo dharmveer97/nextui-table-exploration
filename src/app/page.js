@@ -32,6 +32,7 @@ export default function Home() {
 
   const userData = data && data.getDummyData ? data.getDummyData : [];
 
+  console.log(loading, 'loading');
   return (
     <div className="container mx-auto mt-6">
       {loading && <Spinner />}

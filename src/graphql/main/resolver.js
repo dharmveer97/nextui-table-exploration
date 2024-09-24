@@ -1,6 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 import { allUsers } from '../../utils/data';
 
+const getDummyData = () =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      const data = allUsers.map((user) => ({
+        ...user,
+        id: uuidv4(), // Ensure each user gets a unique ID
+      }));
+      resolve(data);
+    }, 5000); // Wait for 5 seconds
+  });
+
 export default {
   Query: {
     hello: async () => {
@@ -12,11 +23,7 @@ export default {
         return { success: false, message: 'Migration failed.' };
       }
     },
-    getDummyData: () =>
-      allUsers.map((user) => ({
-        ...user,
-        id: uuidv4(), // Ensure each user gets a unique ID
-      })),
+    getDummyData: () => getDummyData(),
   },
   Mutation: {
     updateDummyData: async (root, args) => {
